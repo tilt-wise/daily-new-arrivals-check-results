@@ -1,0 +1,1729 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Daily New Arrivals Check Results</title>
+<style>
+:root{
+--bg:#f7f7f5;
+--surface:#ffffff;
+--surface-2:#f1f1ee;
+--text:#1a1a1a;
+--muted:#6b6b66;
+--line:#e3e3dd;
+--accent:#0f4c3a;
+--accent-soft:#e6efe9;
+--link:#0f4c3a;
+--chip:#eeeeea;
+}
+@media (prefers-color-scheme: dark){
+:root{
+--bg:#121413;
+--surface:#1c1e1d;
+--surface-2:#232625;
+--text:#f0f0ec;
+--muted:#a8a8a0;
+--line:#2e3230;
+--accent:#7bc8a8;
+--accent-soft:#1e2f28;
+--link:#8fd4b6;
+--chip:#2a2e2c;
+}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+margin:0;
+background:var(--bg);
+color:var(--text);
+font-family: system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+line-height:1.65;
+letter-spacing:.01em;
+}
+a{color:var(--link); text-decoration:none}
+a:hover{text-decoration:underline; text-underline-offset:3px}
+
+.wrap{
+max-width:800px;
+margin:0 auto;
+padding:28px 20px 56px;
+}
+
+/* Header */
+.header{
+padding:8px 0 22px;
+border-bottom:2px solid var(--text);
+margin-bottom:28px;
+}
+.header.kicker{
+font-size:13px;
+letter-spacing:.14em;
+font-weight:700;
+color:var(--accent);
+margin:0 0 10px;
+}
+.header h1{
+margin:0;
+font-size:32px;
+line-height:1.2;
+font-weight:800;
+letter-spacing:-.02em;
+}
+.header.sub{
+margin:10px 0 0;
+color:var(--muted);
+font-size:14px;
+}
+@media(min-width:640px){
+.header h1{font-size:40px}
+.wrap{padding:40px 28px 72px}
+}
+
+/* Sections */
+.section{margin-top:36px}
+.section-head{
+display:flex;
+align-items:center;
+gap:12px;
+margin-bottom:16px;
+}
+.section-head h2{
+margin:0;
+font-size:19px;
+font-weight:800;
+letter-spacing:.02em;
+}
+.section-head.line{flex:1;height:1px;background:var(--line)}
+.section-head.count{
+font-size:13px;
+font-weight:700;
+background:var(--text);
+color:var(--bg);
+padding:3px 9px;
+border-radius:999px;
+white-space:nowrap;
+}
+
+.card{
+background:var(--surface);
+border:1px solid var(--line);
+border-radius:16px;
+overflow:hidden;
+}
+.card +.card{margin-top:16px}
+
+.card-head{
+padding:18px 18px 14px;
+border-bottom:1px solid var(--line);
+display:flex;
+justify-content:space-between;
+gap:16px;
+align-items:flex-start;
+}
+.card-head h3{
+margin:0;
+font-size:16px;
+line-height:1.4;
+font-weight:800;
+}
+.card-head.date{
+font-size:13px;
+color:var(--muted);
+white-space:nowrap;
+margin-top:2px;
+}
+.card-body{padding:16px 18px 18px}
+
+/* CANDY HOUSE */
+.changelog{
+background:var(--surface-2);
+border-radius:10px;
+padding:14px 16px;
+font-size:14.5px;
+line-height:1.75;
+}
+.changelog strong{font-weight:800}
+.source-link{
+display:inline-flex;
+align-items:center;
+gap:6px;
+margin-top:14px;
+font-size:13.5px;
+font-weight:700;
+word-break:break-all;
+}
+.source-link span{font-weight:400; color:var(--muted)}
+
+/* Article list */
+.articles{list-style:none; margin:0; padding:0}
+.articles li{
+display:flex;
+gap:14px;
+padding:14px 0;
+border-bottom:1px solid var(--line);
+}
+.articles li:last-child{border-bottom:none; padding-bottom:2px}
+.articles li:first-child{padding-top:2px}
+.num{
+flex:0 0 28px;
+width:28px; height:28px;
+border-radius:50%;
+background:var(--accent-soft);
+color:var(--accent);
+display:flex; align-items:center; justify-content:center;
+font-size:13px; font-weight:800;
+margin-top:1px;
+}
+.article-main{flex:1; min-width:0}
+.article-title{
+font-size:15px;
+line-height:1.55;
+font-weight:600;
+color:var(--text);
+display:block;
+}
+.article-title:hover{color:var(--link)}
+.tag{
+display:inline-block;
+margin-top:6px;
+font-size:12px;
+line-height:1;
+padding:5px 7px;
+border-radius:999px;
+background:var(--chip);
+color:var(--muted);
+font-weight:700;
+}
+
+/* YouTube */
+.video-list{display:grid; gap:16px}
+@media(min-width:640px){.video-list{grid-template-columns:1fr 1fr}}
+.video{
+background:var(--surface);
+border:1px solid var(--line);
+border-radius:16px;
+padding:18px;
+display:flex;
+flex-direction:column;
+}
+.video.channel{
+display:flex; align-items:center; gap:8px;
+font-size:13px; font-weight:800; letter-spacing:.02em;
+}
+.dot{width:8px;height:8px;border-radius:50%;background:#c81e1e; flex-shrink:0}
+@media(prefers-color-scheme:dark){.dot{background:#ff5a5a}}
+.video.guest{
+font-size:13px; color:var(--muted); font-weight:700; margin-top:2px;
+}
+.video.vtitle{
+margin:12px 0 0;
+font-size:15px;
+line-height:1.6;
+font-weight:650;
+flex:1;
+}
+.video.vtitle a{color:var(--text)}
+.video.vtitle a:hover{color:var(--link)}
+.video.meta{
+margin-top:14px;
+padding-top:12px;
+border-top:1px solid var(--line);
+display:flex; justify-content:space-between; align-items:center; gap:12px;
+}
+.video.pub{font-size:13px; color:var(--muted)}
+.video.watch{
+font-size:13px; font-weight:800; white-space:nowrap;
+}
+
+.note{
+margin-top:16px;
+background:var(--surface);
+border:1px solid var(--line);
+border-radius:12px;
+padding:14px 16px;
+font-size:14px;
+line-height:1.7;
+color:var(--muted);
+display:flex; gap:10px;
+}
+.note::before{
+content:"—";
+color:var(--accent);
+font-weight:800;
+}
+
+.day-separator{
+margin-top:56px;
+}
+
+/* No-update note for changelog card */
+.no-update{
+background:var(--surface-2);
+border-radius:10px;
+padding:14px 16px;
+font-size:14.5px;
+line-height:1.75;
+color:var(--muted);
+}
+
+.footer{
+margin-top:40px;
+padding-top:18px;
+border-top:1px solid var(--line);
+font-size:12.5px;
+color:var(--muted);
+display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== Monday, November 16, 2026 ===== -->
+<header class="header">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月16日（月）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web 11/16 -->
+<section class="section" aria-labelledby="web-heading-1116">
+<div class="section-head">
+<h2 id="web-heading-1116">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE 11/16 -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月16日</span>
+</div>
+<div class="card-body">
+<p class="no-update" style="margin:0">新着なし。最新の変更履歴は11月14日（土）のまま。</p>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 11/16 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月16日付 · 9件</span>
+</div>
+<div class="card-body">
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/16/230486.html" target="_blank" rel="noopener noreferrer">PS5周辺機器やソフトウェアが期間限定で特価に——PlayStationのBlack Fridayセールが開催中</a>
+<span class="tag">各種セール情報</span> <span class="tag">2026年11月16日</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/16/230138.html" target="_blank" rel="noopener noreferrer">【レビュー】Macネイティブ配列・アルミ筐体採用のロープロファイルメカニカルキーボード『Akko Air 01』</a>
+<span class="tag">レビュー</span> <span class="tag">2026年11月16日</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/16/230483.html" target="_blank" rel="noopener noreferrer">ワイモバイル、｢ワイモバ親子割｣を11月18日より提供開始——5～18歳のユーザーとその家族であれば1年間1,100円/月割引</a>
+<span class="tag">スマホ関連</span> <span class="tag">2026年11月16日</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/16/230481.html" target="_blank" rel="noopener noreferrer">AppleのAIスマートグラスは早ければ2027年に登場か——ハードウェアはほぼ完成もソフトウェア面の開発に遅れ</a>
+<span class="tag">Apple：噂</span> <span class="tag">2026年11月16日</span>
+</div>
+</li>
+<li>
+<span class="num">5</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/16/230477.html" target="_blank" rel="noopener noreferrer">｢XBOX Series X|S｣と｢XBOX One｣で初代｢XBOX｣や｢XBOX 360｣の起動アニメーションが利用可能に——25周年記念で</a>
+<span class="tag">Microsoft</span> <span class="tag">2026年11月16日</span>
+</div>
+</li>
+<li>
+<span class="num">6</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/16/230475.html" target="_blank" rel="noopener noreferrer">次世代XBOXこと｢Project Helix｣は”PCゲームもプレイできるコンソール”に——担当幹部が明らかに</a>
+<span class="tag">Microsoft</span> <span class="tag">2026年11月16日</span>
+</div>
+</li>
+<li>
+<span class="num">7</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/16/230469.html" target="_blank" rel="noopener noreferrer">Insta360、超大型新製品の年内投入を予告——｢Insta360 Ace Pro 3｣?? それとも全く新しい新型カメラか</a>
+<span class="tag">アクションカメラ関連</span> <span class="tag">2026年11月16日</span>
+</div>
+</li>
+<li>
+<span class="num">8</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/16/230460.html" target="_blank" rel="noopener noreferrer">Insta360、カラーE-ink搭載デジタルフォトフレーム｢Insta360 Toast｣を発売へ——追記：中国では今晩発表</a>
+<span class="tag">アクションカメラ関連</span> <span class="tag">2026年11月16日</span>
+</div>
+</li>
+<li>
+<span class="num">9</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/16/230441.html" target="_blank" rel="noopener noreferrer">｢iPhone Duo｣にFace IDと望遠カメラが搭載される見込み——但し、時期は未定</a>
+<span class="tag">iPhone</span> <span class="tag">2026年11月16日</span>
+</div>
+</li>
+</ol>
+<a class="source-link" href="https://taisy0.com/new-post" target="_blank" rel="noopener noreferrer">
+taisy0.com/new-post <span>↗</span>
+</a>
+</div>
+</article>
+</section>
+
+<!-- YouTube 11/16 -->
+<section class="section" aria-labelledby="yt-heading-1116">
+<div class="section-head">
+<h2 id="yt-heading-1116">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">1本</span>
+</div>
+
+<div class="video-list">
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> 楽待</div>
+<div class="guest">エミン・ユルマズ</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=J18vo-gQtN8" target="_blank" rel="noopener noreferrer">【バブル崩壊か】AI相場焼け野原《エミン》</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月16日（ショート）</span>
+<a class="watch" href="https://www.youtube.com/watch?v=J18vo-gQtN8" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+</div>
+
+<p class="note">タイトルと概要欄（#エミンユルマズ）にエミン・ユルマズ氏の名前あり。その他の5チャンネルでは対象出演者の新着動画なし。報道1930・プライムニュース・深層NEWS・TBS CROSS DIG with Bloombergは新規動画なし、PIVOTは11月16日公開の3本を確認したが対象出演者なし。</p>
+</section>
+
+<!-- ===== Sunday, November 15, 2026 ===== -->
+<header class="header">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月15日（日）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web 11/15 -->
+<section class="section" aria-labelledby="web-heading-1115">
+<div class="section-head">
+<h2 id="web-heading-1115">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE 11/15 -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月15日</span>
+</div>
+<div class="card-body">
+<p class="no-update" style="margin:0">新着なし（最新の変更履歴は2026年11月14日のまま）</p>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 11/15 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月15日付 · 4件</span>
+</div>
+<div class="card-body">
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/15/230438.html" target="_blank" rel="noopener noreferrer">｢Apple TV 4K (第4世代)｣のA19チップは高効率コアが1つ無効化された5コアCPUを搭載</a>
+<span class="tag">Apple TV</span> <span class="tag">2026年11月15日</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/15/230435.html" target="_blank" rel="noopener noreferrer">DJIの新たな360度撮影対応ドローンの試作機が激写される——360度魚眼レンズに加え、通常のジンバルカメラも搭載</a>
+<span class="tag">アクションカメラ関連</span> <span class="tag">2026年11月15日</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/14/230430.html" target="_blank" rel="noopener noreferrer">Netflix、日本で各プランの月額料金を値上げ——月額100〜300円</a>
+<span class="tag">その他ニュース</span> <span class="tag">2026年11月14日</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/14/230428.html" target="_blank" rel="noopener noreferrer">iPhoneの20周年モデル用とされるカバーガラスのサンプルを撮影した動画が登場——4辺曲面ディスプレイ採用を示唆</a>
+<span class="tag">iPhone</span> <span class="tag">2026年11月14日</span>
+</div>
+</li>
+</ol>
+<a class="source-link" href="https://taisy0.com/new-post" target="_blank" rel="noopener noreferrer">
+taisy0.com/new-post <span>↗</span>
+</a>
+</div>
+</article>
+</section>
+
+<!-- YouTube 11/15 -->
+<section class="section" aria-labelledby="yt-heading-1115">
+<div class="section-head">
+<h2 id="yt-heading-1115">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">2本</span>
+</div>
+
+<div class="video-list">
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> 楽待</div>
+<div class="guest">エミン・ユルマズ</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=iY2MFP2VHi4" target="_blank" rel="noopener noreferrer">【超知能AI】2030年にも「人類絶滅」か、元OpenAI・Anthropic研究者の警告《ジェイコブ・コクソン×エミン・ユルマズ》</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月14日</span>
+<a class="watch" href="https://www.youtube.com/watch?v=iY2MFP2VHi4" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> 楽待</div>
+<div class="guest">エミン・ユルマズ</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=03glmuiDmb4" target="_blank" rel="noopener noreferrer">【株価の急落】6月からサインは出てた《エミン》</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月15日（ショート）</span>
+<a class="watch" href="https://www.youtube.com/watch?v=03glmuiDmb4" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+</div>
+
+<p class="note">他の5チャンネル（報道1930、プライムニュース、深層NEWS、TBS CROSS DIG with Bloomberg、PIVOT）の新規動画に対象出演者はいませんでした。</p>
+</section>
+
+<!-- ===== Saturday, November 14, 2026 ===== -->
+<header class="header">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月14日（土）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web 11/14 -->
+<section class="section" aria-labelledby="web-heading-1114">
+<div class="section-head">
+<h2 id="web-heading-1114">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE 11/14 -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月14日</span>
+</div>
+<div class="card-body">
+<div class="changelog">
+<p style="margin:0 0 12px"><strong>2026年11月14日：iOS app 3.0.158 —</strong> アプリを一から作り直す大規模更新。ネイティブUI／ネットワーク層をReact実装に全面置換、AWS IoTを廃止しbiz.candyhouse.coのWebSocketに一本化。ホットアップデート対応など</p>
+<p style="margin:0 0 12px"><strong>2026年11月14日：Android app 3.0.266(939) —</strong> 開発環境を最新化、未発売の新製品を含む場合のデバイス一覧の不具合修正、読み込み失敗時の自動再読み込み、電池残量のサーバー値利用など</p>
+<p style="margin:0"><strong>2026年11月13日：biz.candyhouse.co —</strong> 赤外線リモコンのUIをAIに一から設計・実装し直し</p>
+</div>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 11/14 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月14日付 · 10件</span>
+</div>
+<div class="card-body">
+<p style="margin:0 0 4px; font-size:13px; font-weight:700; color:var(--muted)">11月14日（6件）</p>
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/14/230423.html" target="_blank" rel="noopener noreferrer">SwitchBotの未発表製品｢ハブ4｣と｢お掃除ロボットS30｣が早くも販売中</a>
+<span class="tag">その他ニュース</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/14/230421.html" target="_blank" rel="noopener noreferrer">Beatsのヘッドホンやイヤホンが最大20％オフに——Amazonで割引価格で販売中</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/14/230419.html" target="_blank" rel="noopener noreferrer">｢Google Pixel｣シリーズ、11月のアップデート後にカメラやデスクトップモードでも不具合が報告される</a>
+<span class="tag">スマホ関連</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/14/230415.html" target="_blank" rel="noopener noreferrer">ミニPCやNASなどが最大32％オフに—Minisforumが公式ストアでブラックフライデーのセールを開催中</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">5</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/14/230412.html" target="_blank" rel="noopener noreferrer">壊れるまで継続中の｢iPhone Duo｣の開閉テスト、45万回突破もヒンジの動きに変化が</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">6</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/14/230409.html" target="_blank" rel="noopener noreferrer">Apple、｢tvOS 27.2.1｣をリリース——米国などでは｢Siri AI｣が第2・3世代モデルで利用可能に</a>
+<span class="tag">Apple TV</span>
+</div>
+</li>
+</ol>
+<p style="margin:16px 0 4px; font-size:13px; font-weight:700; color:var(--muted)">11月13日（4件）</p>
+<ol class="articles" start="7">
+<li>
+<span class="num">7</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230406.html" target="_blank" rel="noopener noreferrer">C smartがブラックフライデーのキャンペーンを開始——25歳以下なら｢iPad｣購入でペンシルや保護フィルムが貰える</a>
+<span class="tag">iPad</span> <span class="tag">11月13日付</span>
+</div>
+</li>
+<li>
+<span class="num">8</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230403.html" target="_blank" rel="noopener noreferrer">DJIが中国で11月18日より一部製品を値上げへ——日本では今のところ動きなし</a>
+<span class="tag">アクションカメラ関連</span> <span class="tag">11月13日付</span>
+</div>
+</li>
+<li>
+<span class="num">9</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230401.html" target="_blank" rel="noopener noreferrer">初代｢XBOX｣の作品が本日からWindows PCでプレイ可能に</a>
+<span class="tag">Microsoft</span> <span class="tag">11月13日付</span>
+</div>
+</li>
+<li>
+<span class="num">10</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230396.html" target="_blank" rel="noopener noreferrer">AmazonでM6チップ搭載｢Mac mini｣の16GB/256GBモデルがセール中——11%ポイント還元で実質133,452円に</a>
+<span class="tag">各種セール情報</span> <span class="tag">11月13日付</span>
+</div>
+</li>
+</ol>
+<a class="source-link" href="https://taisy0.com/new-post" target="_blank" rel="noopener noreferrer">
+taisy0.com/new-post <span>↗</span>
+</a>
+</div>
+</article>
+</section>
+
+<!-- YouTube 11/14 -->
+<section class="section" aria-labelledby="yt-heading-1114">
+<div class="section-head">
+<h2 id="yt-heading-1114">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">1本</span>
+</div>
+
+<div class="video-list">
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> 深層NEWS</div>
+<div class="guest">小谷哲男</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=5I7ShEqkjOY" target="_blank" rel="noopener noreferrer">欧州への圧力強化ロシアの狙いは▽米中露会談は？交錯する思惑▽戦闘終結で直面「３つの課題」【深層NEWS】11月13日(金)</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月14日（ゲスト：廣瀬陽子・小谷哲男）</span>
+<a class="watch" href="https://www.youtube.com/watch?v=5I7ShEqkjOY" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+</div>
+
+<p class="note">報道1930・プライムニュースの11月13日放送分もYouTubeで公開されたが対象出演者はなし。楽待・PIVOT・TBS CROSS DIGの新着動画にも対象出演者はなし。</p>
+</section>
+
+<!-- ===== Friday, November 13, 2026 ===== -->
+<header class="header">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月13日（金）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web 11/13 -->
+<section class="section" aria-labelledby="web-heading-1113">
+<div class="section-head">
+<h2 id="web-heading-1113">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE 11/13 -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月13日</span>
+</div>
+<div class="card-body">
+<p class="no-update" style="margin:0">新着はありません（最新の変更履歴は2026年11月11日のまま）。</p>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 11/13 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月13日付 · 20件</span>
+</div>
+<div class="card-body">
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230394.html" target="_blank" rel="noopener noreferrer">KDDIが｢BLACK FRIDAY 2026｣のキャンペーンを開始——Apple Watchが最大16,500円オフ、AirPods Pro 3が最大6,600円オフなど</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230388.html" target="_blank" rel="noopener noreferrer">栃木レザー採用 &amp; 型崩れし難いAirTag ホルダー付コンパクトウォレット「MinZ Leather Card Wallet Pro for AirTag」発売</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230385.html" target="_blank" rel="noopener noreferrer">Amazonの音楽聴き放題サービス｢Amazon Music Unlimited｣、新規登録で最初の3ヶ月間無料になるキャンペーンがスタート</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230359.html" target="_blank" rel="noopener noreferrer">Kindleストアで今週も｢KADOKAWAのKindle本フェア｣がスタート——5,000冊以上が最大80％オフに</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">5</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230356.html" target="_blank" rel="noopener noreferrer">【セール】Kindleストアで｢Kindle本 マンガ&amp;ラノベフェア第2弾｣がスタート ——｢湯遊ワンダーランド｣など多数タイトルが最大80％オフ</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">6</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230381.html" target="_blank" rel="noopener noreferrer">ディーフ、平織りで美しい仕上がりのアラミド繊維ケース｢Ultra Slim &amp; Light Case DURO GRiD EDITION｣を発表—iPhone 18/17 Proシリーズに対応</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">7</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230378.html" target="_blank" rel="noopener noreferrer">全国のApple Store全店舗が｢ポケモンGO｣のポケストップに——11月16日〜30日の期間限定</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+<li>
+<span class="num">8</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230374.html" target="_blank" rel="noopener noreferrer">Apple、ポケモン30周年を記念した特別デザインのAppleギフトカードを直営店で販売——11月30日までの期間・数量限定</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+<li>
+<span class="num">9</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230372.html" target="_blank" rel="noopener noreferrer">Mac向けクリーナーソフト｢BuhoCleaner｣がM6チップに対応——セールも開催中</a>
+<span class="tag">ソフトウェアニュース</span>
+</div>
+</li>
+<li>
+<span class="num">10</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230370.html" target="_blank" rel="noopener noreferrer">｢iPhone 18｣の発売時期変更、イメージセンサーのサプライヤー変更も要因か</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">11</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230353.html" target="_blank" rel="noopener noreferrer">【セール】KORGの音楽制作アプリ＆ソフトウェア全製品が最大50％オフに——ブラックフライデーのセール開催中</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">12</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230368.html" target="_blank" rel="noopener noreferrer">「Apple Sports」アプリが米総合格闘技団体「UFC」の試合をサポート</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+<li>
+<span class="num">13</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230366.html" target="_blank" rel="noopener noreferrer">X、1度に投稿出来る写真や動画の数が5倍に——最大20枚（本）まで投稿可能</a>
+<span class="tag">SNS関連</span>
+</div>
+</li>
+<li>
+<span class="num">14</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230349.html" target="_blank" rel="noopener noreferrer">3日間限定のKindleストアのマンガ毎週末セール、今週末は｢幽★遊★白書｣や｢ちびまる子ちゃん｣などが全巻50％ポイント還元に</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">15</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230342.html" target="_blank" rel="noopener noreferrer">Appleの｢Apple TV 4K (第4世代)｣は本日発売</a>
+<span class="tag">Apple TV</span>
+</div>
+</li>
+<li>
+<span class="num">16</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230363.html" target="_blank" rel="noopener noreferrer">米Apple、ホリデーシーズン向けショートフィルム『The Dreamer』を公開</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+<li>
+<span class="num">17</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/13/230361.html" target="_blank" rel="noopener noreferrer">｢Google Pixel｣の一部でワイヤレス充電が正常に動作しなくなる不具合——11月のアップデートが要因か</a>
+<span class="tag">スマホ関連</span>
+</div>
+</li>
+<li>
+<span class="num">18</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230346.html" target="_blank" rel="noopener noreferrer">Nothingの未発表スマホ3機種の型番が明らかに——2027年に発売か</a>
+<span class="tag">スマホ関連</span> <span class="tag">11月12日付</span>
+</div>
+</li>
+<li>
+<span class="num">19</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230336.html" target="_blank" rel="noopener noreferrer">Anker、入眠や目覚めをサポートしてくれるスマート睡眠スピーカー｢Anker SleepLab｣と｢Anker SleepLab Pro｣を発表</a>
+<span class="tag">オーディオ製品</span> <span class="tag">11月12日付</span>
+</div>
+</li>
+<li>
+<span class="num">20</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230329.html" target="_blank" rel="noopener noreferrer">Anker、AIボイスレコーダーを搭載したイヤーカフ型イヤホン「Anker AeroClip 2 Pro」を発表——来年3月に発売</a>
+<span class="tag">オーディオ製品</span> <span class="tag">11月12日付</span>
+</div>
+</li>
+</ol>
+</div>
+</article>
+</section>
+
+<!-- YouTube 11/13 -->
+<section class="section" aria-labelledby="yt-heading-1113">
+<div class="section-head">
+<h2 id="yt-heading-1113">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">1本</span>
+</div>
+
+<div class="video-list">
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> 楽待</div>
+<div class="guest">エミン・ユルマズ</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=S_UIkZZ3vqE" target="_blank" rel="noopener noreferrer">【エミン】技術者に高い給料払うべき</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月12日</span>
+<a class="watch" href="https://www.youtube.com/watch?v=S_UIkZZ3vqE" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+</div>
+
+<p class="note">その他、報道1930（11/11・11/12放送分）、プライムニュース（11/12放送分）、深層NEWS（11/12放送分・石破茂×野田佳彦）、TBS CROSS DIG、PIVOTの新着動画を確認しましたが、対象出演者の出演はありませんでした。</p>
+</section>
+
+<!-- ===== Thursday, November 12, 2026 ===== -->
+<header class="header">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月12日（木）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web 11/12 -->
+<section class="section" aria-labelledby="web-heading-1112">
+<div class="section-head">
+<h2 id="web-heading-1112">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE 11/12 -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月11日（水）のエントリ</span>
+</div>
+<div class="card-body">
+<div class="changelog">
+<p style="margin:0 0 12px"><strong>biz.candyhouse.co：</strong>プリセットの赤外線リモコンをコピーして新しいボタンを学習・追加したり、既存ボタンを編集（名前の変更・削除・並び替え）できるように。赤外線リモコンタイプ選択画面で「学習（ゼロから赤外線リモコンを作成）」を一番上に移動。</p>
+<p style="margin:0"><strong>Sesame Face Pro / Sesame Face 2 Pro 3.0-18、Sesame Face 3.0-19、Sesame Face Pro AI時代版 3.0-22、Sesame Face AI時代版 3.0-23、Sesame Touch Pro / Sesame Touch 2 Pro 3.0-9、Sesame Touch / Sesame Touch 2 3.0-10：</strong>【重要アップデート】Bluetoothホワイトリスト設定時のメモリ確保不足によるヒープ破壊を修正し、複数Bluetooth機器の同時接続時の切断や「ピッ」という再接続音、ダブルロックの片方の遅延を解消。指数バックオフによる再接続（10秒／30秒／1分／2分／5分／10分、6回失敗で諦め）を追加し、複数台Sesameの解錠遅れを改善。解錠待ち時はデューティ比100%でスキャンし、接続にかかる時間を約7秒から0.3〜1.3秒に短縮。1台目のSesame接続完了後すぐに接続間隔を300〜495msへ変更し、2台目のSesameの約5秒の遅れを約0.05秒に改善。</p>
+</div>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 11/12 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月12日付 · 11件</span>
+</div>
+<div class="card-body">
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230299.html" target="_blank" rel="noopener noreferrer">ディーフ、｢iPhone 18 Pro/17 Pro｣向けアルミバンパー｢CLEAVE Multi Material Bumper｣を発表</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230295.html" target="_blank" rel="noopener noreferrer">「楽天市場」「楽天ブックス」「楽天ラクマ」などで11月19日よりブラックフライデーのセールイベントが開催へ</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230293.html" target="_blank" rel="noopener noreferrer">AppleとSamsungが折りたたみ式スマホ向けの新しいガラスを開発中との情報——早ければ2028年モデルから採用か</a>
+<span class="tag">スマホ関連</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230291.html" target="_blank" rel="noopener noreferrer">【セール】体組成計とバスマットが1つになった｢スマートバスマット｣と体の回復状態を可視化できるリング｢Smart Recovery Ring｣が20％オフに</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">5</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230287.html" target="_blank" rel="noopener noreferrer">Belkin、ANC搭載の子供用ヘッドホン｢SoundForm Play アクティブノイズキャンセリング 子ども用ヘッドホン｣を発売</a>
+<span class="tag">オーディオ製品</span>
+</div>
+</li>
+<li>
+<span class="num">6</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230281.html" target="_blank" rel="noopener noreferrer">SwitchBot、海外で｢SwitchBot カーテン4｣を発表</a>
+<span class="tag">その他ニュース</span>
+</div>
+</li>
+<li>
+<span class="num">7</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230275.html" target="_blank" rel="noopener noreferrer">｢iPhone 18 Pro Max｣、スマホ32機種を対象としたバッテリー比較テストで総合1位に</a>
+<span class="tag">スマホ関連</span>
+</div>
+</li>
+<li>
+<span class="num">8</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230272.html" target="_blank" rel="noopener noreferrer">Google、CarPlay向け「Gemini」アプリを提供開始</a>
+<span class="tag">その他ニュース</span>
+</div>
+</li>
+<li>
+<span class="num">9</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/12/230270.html" target="_blank" rel="noopener noreferrer">Google、同社初の紛失防止タグ｢Google Pixel Tag｣を発売</a>
+<span class="tag">その他ニュース</span>
+</div>
+</li>
+<li>
+<span class="num">10</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230268.html" target="_blank" rel="noopener noreferrer">AppleのAIグラスおよび新型スマートイヤホンの開発は進行中?? —— 中国のサプライヤーが業績発表で言及</a>
+<span class="tag">Apple：噂</span> <span class="tag">11月11日付</span>
+</div>
+</li>
+<li>
+<span class="num">11</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230266.html" target="_blank" rel="noopener noreferrer">Amazonの新型｢Kindle Paperwhite｣と新型｢Kindle Colorsoft｣は本日発売</a>
+<span class="tag">その他ニュース</span> <span class="tag">11月11日付</span>
+</div>
+</li>
+</ol>
+</div>
+</article>
+</section>
+
+<!-- YouTube 11/12 -->
+<section class="section" aria-labelledby="yt-heading-1112">
+<div class="section-head">
+<h2 id="yt-heading-1112">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">1本</span>
+</div>
+
+<div class="video-list">
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> 楽待</div>
+<div class="guest">エミン・ユルマズ</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=hF_MYsm14yM" target="_blank" rel="noopener noreferrer">【地政学リスク】日経平均に赤信号? 今はチャンスか罠か／世界の政治・マーケットを動かす要因は、今後も「米中対立」が全て／イラン攻撃激化リスク、「不確実性の時代」は続く《エミン・ユルマズ徹底解説／後編》</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月12日 12:00（収録日：11月9日）</span>
+<a class="watch" href="https://www.youtube.com/watch?v=hF_MYsm14yM" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+</div>
+
+<p class="note">なお、深層NEWSの11月10日・11月11日放送分の本編動画がYouTubeで公開されたことを確認したが、いずれも対象出演者はいなかった。報道1930・プライムニュースの今夜の放送はまだ始まっていない。</p>
+</section>
+
+<!-- ===== Wednesday, November 11, 2026 ===== -->
+<header class="header">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月11日（水）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web 11/11 -->
+<section class="section" aria-labelledby="web-heading-1111">
+<div class="section-head">
+<h2 id="web-heading-1111">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE 11/11 -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月11日</span>
+</div>
+<div class="card-body">
+<p class="no-update" style="margin:0">新着はありません。最新の変更履歴は2026年11月7日（土）のAndroid app 3.0.266のままです。</p>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 11/11 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月11日付 · 10件</span>
+</div>
+<div class="card-body">
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230263.html" target="_blank" rel="noopener noreferrer">Apple、｢Apple サポートコミュニティ｣を11月20日で閉鎖——既に新規投稿の受付は終了</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230261.html" target="_blank" rel="noopener noreferrer">｢SoftBank Starlink Direct｣がオーストラリアでも利用可能に</a>
+<span class="tag">スマホ関連</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230259.html" target="_blank" rel="noopener noreferrer">ソフトバンク・ワイモバイル・LINEMOが｢Apple One｣の個人プランの提供を11月18日より開始——月額料金の10％を2年間ポイント還元</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230256.html" target="_blank" rel="noopener noreferrer">Microsoft、2026年11月のセキュリティ更新プログラムをリリース ｰ 対象の脆弱性数は先月に続き1,000件超え</a>
+<span class="tag">各種アップデート</span>
+</div>
+</li>
+<li>
+<span class="num">5</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230252.html" target="_blank" rel="noopener noreferrer">【復旧済み】AppleのiCloudの各種サービスで障害が発生中——一部は機能停止状態</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+<li>
+<span class="num">6</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230248.html" target="_blank" rel="noopener noreferrer">これがNothingのAI専用デバイスか——新たなティザー動画公開</a>
+<span class="tag">その他ニュース</span>
+</div>
+</li>
+<li>
+<span class="num">7</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230244.html" target="_blank" rel="noopener noreferrer">iFixitが｢PROLED XDRディスプレイ搭載MacBook Pro｣の分解動画を公開——光るAppleロゴの構造などが明らかに</a>
+<span class="tag">MacBook Pro</span>
+</div>
+</li>
+<li>
+<span class="num">8</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230241.html" target="_blank" rel="noopener noreferrer">｢Apple TV｣で手話通訳機能が利用可能に——アメリカ手話とイギリス手話に対応</a>
+<span class="tag">Apple TV</span>
+</div>
+</li>
+<li>
+<span class="num">9</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230238.html" target="_blank" rel="noopener noreferrer">Google Store、11月20日よりブラックフライデーのセールを開催へ</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">10</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/11/230236.html" target="_blank" rel="noopener noreferrer">Apple、｢AirPods Pro 2/3｣｢AirPods 4/5｣｢AirPods Max 2｣向けに最新のファームウェアアップデート｢9B47｣をリリース</a>
+<span class="tag">各種アップデート</span>
+</div>
+</li>
+</ol>
+</div>
+</article>
+</section>
+
+<!-- YouTube 11/11 -->
+<section class="section" aria-labelledby="yt-heading-1111">
+<div class="section-head">
+<h2 id="yt-heading-1111">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">0本</span>
+</div>
+
+<p class="note" style="margin-top:0">新着はありません。対象出演者（小泉悠・小谷哲男・高橋杉雄・今井翔太・エミン・ユルマズ・興梠一郎・峯村健司）が出演する新しい動画は確認できませんでした。</p>
+
+<p class="note">なお、深層NEWSの2026年11月10日放送分の本編動画は、チェック時点（2026年11月11日 18:12 JST）ではYouTubeで公開が確認できなかったため、次回以降のチェックで確認します。</p>
+</section>
+
+<!-- ===== Tuesday, November 10, 2026 ===== -->
+<header class="header day-separator">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月10日（火）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web 11/10 -->
+<section class="section" aria-labelledby="web-heading-1110">
+<div class="section-head">
+<h2 id="web-heading-1110">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE 11/10 -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月10日</span>
+</div>
+<div class="card-body">
+<p class="no-update" style="margin:0">新着はありません（最新の変更履歴は2026年11月7日のAndroid app 3.0.266のまま）。</p>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 11/10 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月10日付 · 18件</span>
+</div>
+<div class="card-body">
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230225.html" target="_blank" rel="noopener noreferrer">LINEヤフー、AIエージェント「Agent i」のiOS向けアプリを提供開始</a>
+<span class="tag">アプリ関連</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230221.html" target="_blank" rel="noopener noreferrer">JR東日本、スマホをかざさないで改札を通過出来る「ウォークスルー改札」を2028年春から山手線全駅で開始へ</a>
+<span class="tag">スマホ関連</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230219.html" target="_blank" rel="noopener noreferrer">Apple Intelligence、中国でiPadおよびMac向けの規制登録を完了</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230217.html" target="_blank" rel="noopener noreferrer">「Nintendo Switch 2」と「Nintendo Switch」向けに本体システムバージョンv23.5.0が配信開始——「プレゼント」機能の追加など</a>
+<span class="tag">ゲーム関連</span>
+</div>
+</li>
+<li>
+<span class="num">5</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230213.html" target="_blank" rel="noopener noreferrer">LINEであらかじめ日時を指定してメッセージを送信予約できる「メッセージ予約」がLINEラボで試用可能に</a>
+<span class="tag">スマホ関連</span>
+</div>
+</li>
+<li>
+<span class="num">6</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230208.html" target="_blank" rel="noopener noreferrer">最大4つのWebサイトを並べて表示出来るWebブラウザアプリ「Search Ace – AI Duo Browser」がiPhone Duoに対応</a>
+<span class="tag">アプリ関連</span>
+</div>
+</li>
+<li>
+<span class="num">7</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230185.html" target="_blank" rel="noopener noreferrer">SwitchBotのスマートホームデバイスが最大58％オフに——公式ストアで「あったかおうち時間フェア」開催中</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">8</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230206.html" target="_blank" rel="noopener noreferrer">Apple、セキュリティの修正を含んだ「visionOS 27.2.1」をリリース</a>
+<span class="tag">各種アップデート</span>
+</div>
+</li>
+<li>
+<span class="num">9</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230204.html" target="_blank" rel="noopener noreferrer">Apple、セキュリティの修正を含んだ「watchOS 26.6.1」をリリース</a>
+<span class="tag">各種アップデート</span>
+</div>
+</li>
+<li>
+<span class="num">10</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230202.html" target="_blank" rel="noopener noreferrer">Apple、セキュリティの修正を含んだ「watchOS 27.2.1」をリリース</a>
+<span class="tag">各種アップデート</span>
+</div>
+</li>
+<li>
+<span class="num">11</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230199.html" target="_blank" rel="noopener noreferrer">Apple、「iOS 18.7.12」と「iPadOS 18.7.12」をリリース——複数の脆弱性を修正</a>
+<span class="tag">iPad</span>
+</div>
+</li>
+<li>
+<span class="num">12</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230197.html" target="_blank" rel="noopener noreferrer">Apple、複数の脆弱性の修正を含んだ「iOS 26.7.3」と「iPadOS 26.7.3」をリリース</a>
+<span class="tag">iPad</span>
+</div>
+</li>
+<li>
+<span class="num">13</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230195.html" target="_blank" rel="noopener noreferrer">Apple、セキュリティの修正を含んだ「macOS Tahoe 26.7.3」と「macOS Sequoia 15.8.3」をリリース</a>
+<span class="tag">macOS</span>
+</div>
+</li>
+<li>
+<span class="num">14</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230190.html" target="_blank" rel="noopener noreferrer">Apple、セキュリティの修正を含んだ「macOS Golden Gate 27.2.1」をリリース</a>
+<span class="tag">macOS</span>
+</div>
+</li>
+<li>
+<span class="num">15</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230188.html" target="_blank" rel="noopener noreferrer">Apple、バグ修正とセキュリティアップデートを含んだ「iOS 27.2.1」と「iPadOS 27.2.1」をリリース</a>
+<span class="tag">iPad</span>
+</div>
+</li>
+<li>
+<span class="num">16</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230183.html" target="_blank" rel="noopener noreferrer">「HomePod mini 2」をMacのスピーカーとして利用する機能に不具合か——一部ユーザーから報告される</a>
+<span class="tag">不具合関連</span>
+</div>
+</li>
+<li>
+<span class="num">17</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/10/230179.html" target="_blank" rel="noopener noreferrer">Minisforum、Ryzen AI Max+ 388搭載の高性能・小型パソコン「T5 Max-388」を発表</a>
+<span class="tag">その他ニュース</span>
+</div>
+</li>
+<li>
+<span class="num">18</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/09/230173.html" target="_blank" rel="noopener noreferrer">「iPad mini (A20 Pro)」の分解動画公開——従来モデルより内部スペースに余裕のある設計に</a>
+<span class="tag">iPad</span> <span class="tag">11月9日付</span>
+</div>
+</li>
+</ol>
+</div>
+</article>
+</section>
+
+<!-- YouTube 11/10 -->
+<section class="section" aria-labelledby="yt-heading-1110">
+<div class="section-head">
+<h2 id="yt-heading-1110">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">3本</span>
+</div>
+
+<div class="video-list">
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> PIVOT</div>
+<div class="guest">エミン・ユルマズ</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=s8449Pwb9iM" target="_blank" rel="noopener noreferrer">【AIバブル崩壊の予兆】エミン・ユルマズ×奥野一成×重見吉徳×佐々木紀彦/中間選挙でAI規制強化か/OpenAIは上場できない?/米国は株より国債を選ぶ【マネー超予測】</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月9日 20:00</span>
+<a class="watch" href="https://www.youtube.com/watch?v=s8449Pwb9iM" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> 楽待</div>
+<div class="guest">エミン・ユルマズ</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=tJ2hZ3c5dVc" target="_blank" rel="noopener noreferrer">【AI相場が焼け野原?】米国中間選挙、民主党圧勝はAIへの「反撃の狼煙」／ツルハシ銘柄が一気に崩れる／アンソロピック上場見送り可能性も／AIへの逆襲は全世界で起こる《エミン・ユルマズが徹底解説》</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月9日 21:00</span>
+<a class="watch" href="https://www.youtube.com/watch?v=tJ2hZ3c5dVc" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> プライムニュース（BSフジ）</div>
+<div class="guest">今井翔太</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=a7HScuIOolE" target="_blank" rel="noopener noreferrer">【異質な価値観の知性】AIの進化にどう向き合うべきか：私の提言 今井翔太 2026/11/2放送【BSフジ プライムニュース】</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月10日 15:00</span>
+<a class="watch" href="https://www.youtube.com/watch?v=a7HScuIOolE" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+</div>
+</section>
+
+<!-- ===== Monday, November 9, 2026 ===== -->
+<header class="header day-separator">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月9日（月）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web 11/9 -->
+<section class="section" aria-labelledby="web-heading-1109">
+<div class="section-head">
+<h2 id="web-heading-1109">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE 11/9 -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月9日</span>
+</div>
+<div class="card-body">
+<p class="no-update" style="margin:0">新着はありません。最新の変更履歴は2026年11月7日（土）のAndroid app 3.0.266のままです。</p>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 11/9 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月9日付 · 7件</span>
+</div>
+<div class="card-body">
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/09/230165.html" target="_blank" rel="noopener noreferrer">ロジクール、人気ワイヤレスマウス｢MX Master 4｣の数量限定モデル｢Creator Edition｣と｢Developer Edition｣を発表</a>
+<span class="tag">その他ニュース</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/09/230159.html" target="_blank" rel="noopener noreferrer">｢iPhone Air 2｣と｢iPhone 18｣のダミーモデルが早くも登場??</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/09/230155.html" target="_blank" rel="noopener noreferrer">CIO、モバ充・ワイヤレス充電・充電ケーブルを1台にまとめたモバイルバッテリー｢SMARTCOBY Ex06 Wireless2.2 Built in CORD REEL｣を発表</a>
+<span class="tag">その他ニュース</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/09/230151.html" target="_blank" rel="noopener noreferrer">スクエニ、スマホ向け新作｢ドラゴンクエストRPG 魔界樹と導かれし島｣を発表——詳細は明日20時に発表へ</a>
+<span class="tag">ゲーム関連</span>
+</div>
+</li>
+<li>
+<span class="num">5</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/09/230147.html" target="_blank" rel="noopener noreferrer">｢PlayStation Portal プレーヤー｣に｢ミッドナイトブラック 日本語専用｣が登場 ——12月10日発売で新たに本体ストレージも搭載</a>
+<span class="tag">ゲーム関連</span>
+</div>
+</li>
+<li>
+<span class="num">6</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/09/230143.html" target="_blank" rel="noopener noreferrer">対象のタイトルが全巻99円均一!!——Kindleストアで「全巻一気読み99円セール」開催中（11月12日まで）</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">7</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/09/230140.html" target="_blank" rel="noopener noreferrer">Apple、｢iOS 28｣や｢macOS 28｣の開発で新たなアプローチを採用</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+</ol>
+</div>
+</article>
+</section>
+
+<!-- YouTube 11/9 -->
+<section class="section" aria-labelledby="yt-heading-1109">
+<div class="section-head">
+<h2 id="yt-heading-1109">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">0本</span>
+</div>
+
+<p class="note" style="margin-top:0">新着はありません。報道1930、プライムニュース、深層NEWS、TBS CROSS DIG with Bloomberg、楽待、PIVOTの各チャンネルで、対象出演者（小泉悠・小谷哲男・高橋杉雄・今井翔太・エミン・ユルマズ・興梠一郎・峯村健司）が出演する新しい動画は確認できませんでした。</p>
+</section>
+
+<!-- ===== Sunday, November 8, 2026 ===== -->
+<header class="header">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月8日（日）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web 11/8 -->
+<section class="section" aria-labelledby="web-heading-1108">
+<div class="section-head">
+<h2 id="web-heading-1108">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE 11/8 -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月8日</span>
+</div>
+<div class="card-body">
+<p class="no-update" style="margin:0">新着なし（最新の変更履歴は11月7日のまま）</p>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 11/8 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月8日付 · 6件</span>
+</div>
+<div class="card-body">
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/08/230136.html" target="_blank" rel="noopener noreferrer">KADOKAWAのコミックからライトノベルまで計3000冊以上が99円均一!! —— ｢秋カド2026 後半｣が開催中</a>
+<span class="tag">セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/08/230134.html" target="_blank" rel="noopener noreferrer">ソニーの新型ワイヤレスイヤホン｢YY3029｣がFCCの認証を取得——ノイキャン搭載のエントリーモデルか</a>
+<span class="tag">オーディオ</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/08/230130.html" target="_blank" rel="noopener noreferrer">｢iPhone Duo｣の画面ひび割れ問題の要因とされるヒンジの損傷は不良部品が原因か——影響を受けるデバイスは特定可能との見方</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/08/230128.html" target="_blank" rel="noopener noreferrer">C smartがひと足早いクリスマス特別セールを開催中——LINE ID連携と誕生日登録でiPad・Apple Watch・AirPods・Beats製品が最大1.5万円オフに</a>
+<span class="tag">セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">5</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/08/230126.html" target="_blank" rel="noopener noreferrer">｢PROLED XDRディスプレイ搭載MacBook Pro｣のAppleロゴの明るさやオンオフを手軽にカスタマイズ出来るアプリが登場</a>
+<span class="tag">MacBook Pro</span>
+</div>
+</li>
+<li>
+<span class="num">6</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/07/230121.html" target="_blank" rel="noopener noreferrer">Satechiのワイヤレス充電器や紛失防止タグなどが最大53％オフに</a>
+<span class="tag">セール情報</span> <span class="tag">11月7日付</span>
+</div>
+</li>
+</ol>
+</div>
+</article>
+</section>
+
+<!-- YouTube 11/8 -->
+<section class="section" aria-labelledby="yt-heading-1108">
+<div class="section-head">
+<h2 id="yt-heading-1108">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">1本</span>
+</div>
+
+<div class="video-list">
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> プライムニュース（BSフジ）</div>
+<div class="guest">峯村健司</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=klWniPkkV80" target="_blank" rel="noopener noreferrer">｢民間が穴にならない防衛力｣国民をどう守る？　2026/10/30放送＜ショート＞</a>
+</p>
+<div class="meta">
+<span class="pub">公開：2026年11月8日</span>
+<a class="watch" href="https://www.youtube.com/watch?v=klWniPkkV80" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+</div>
+</section>
+
+<!-- ===== Saturday, November 7, 2026 ===== -->
+<header class="header day-separator">
+<p class="kicker">毎日の新着チェック</p>
+<h1>2026年11月7日（土）の新着</h1>
+<p class="sub">夕方のチェック結果</p>
+</header>
+
+<!-- Web -->
+<section class="section" aria-labelledby="web-heading">
+<div class="section-head">
+<h2 id="web-heading">Web — 新着記事</h2>
+<div class="line"></div>
+</div>
+
+<!-- CANDY HOUSE -->
+<article class="card">
+<div class="card-head">
+<h3>CANDY HOUSE Change Log</h3>
+<span class="date">2026年11月7日</span>
+</div>
+<div class="card-body">
+<div class="changelog">
+<strong>Androidアプリ 3.0.266(933)：</strong> Sesame 3/4のBluetooth施解錠履歴の抜け漏れを修正（全件取得まで読み込み継続）、設定済みNFCタグでの施解錠不具合を修正、開発環境を最新化、一部Sony製Android 16端末のWebViewクラッシュ防止、SesameOSダウンロード前の古いキャッシュ自動クリア
+</div>
+<a class="source-link" href="https://jp.candyhouse.co/pages/changelog" target="_blank" rel="noopener noreferrer">
+jp.candyhouse.co/pages/changelog <span>↗</span>
+</a>
+</div>
+</article>
+
+<!-- taisy0 -->
+<article class="card">
+<div class="card-head">
+<h3>「気になる、記になる…」新着記事</h3>
+<span class="date">2026年11月7日付 · 7件</span>
+</div>
+<div class="card-body">
+<ol class="articles">
+<li>
+<span class="num">1</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/07/230123.html" target="_blank" rel="noopener noreferrer">壊れるまで継続中の｢iPhone Duo｣の開閉テストが30万回を突破——動作に問題はなし</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">2</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/07/230114.html" target="_blank" rel="noopener noreferrer">【セール】Kindleストアで｢Kindle本 マンガ&amp;ラノベフェア第1弾｣が開催中 ——2万冊以上が最大50％オフに</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">3</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/07/230047.html" target="_blank" rel="noopener noreferrer">【セール】1万冊以上のKindle本が499円均一に（11月19日まで）</a>
+<span class="tag">各種セール情報</span>
+</div>
+</li>
+<li>
+<span class="num">4</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/07/230112.html" target="_blank" rel="noopener noreferrer">｢iPhone Duo｣対応のアプリ数、既に10万本以上に</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">5</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/07/230109.html" target="_blank" rel="noopener noreferrer">Clicks、キーボードケース｢Clicks Keyboard｣の｢iPhone 18 Pro｣シリーズ対応モデルを発売</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">6</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/07/230104.html" target="_blank" rel="noopener noreferrer">Apple、来年後半発売の新型iPhoneからアクションボタンを廃止か ｰ カメラコントロールボタンに統合??</a>
+<span class="tag">iPhone</span>
+</div>
+</li>
+<li>
+<span class="num">7</span>
+<div class="article-main">
+<a class="article-title" href="https://taisy0.com/2026/11/07/230101.html" target="_blank" rel="noopener noreferrer">Apple、ホリデーシーズンに向けた返品可能期間の延長対応を開始</a>
+<span class="tag">Apple</span>
+</div>
+</li>
+</ol>
+</div>
+</article>
+</section>
+
+<!-- YouTube -->
+<section class="section" aria-labelledby="yt-heading">
+<div class="section-head">
+<h2 id="yt-heading">YouTube — 新着動画</h2>
+<div class="line"></div>
+<span class="count">2本</span>
+</div>
+
+<div class="video-list">
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> 報道1930</div>
+<div class="guest">小谷哲男</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=o3u3CfbhZuA" target="_blank" rel="noopener noreferrer">どうなるウクライナ‥中間選挙大敗で／“ロシア寄り”トランプ外交に変化？【11月6日(金) #報道1930】</a>
+</p>
+<div class="meta">
+<span class="pub">公開：11月7日 0:17頃</span>
+<a class="watch" href="https://www.youtube.com/watch?v=o3u3CfbhZuA" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+
+<article class="video">
+<div>
+<div class="channel"><span class="dot"></span> 楽待</div>
+<div class="guest">峯村健司</div>
+</div>
+<p class="vtitle">
+<a href="https://www.youtube.com/watch?v=6X2sMBFXkQU" target="_blank" rel="noopener noreferrer">【大暴走に備えよ】大敗のトランプ、中国・北朝鮮・イラン外交で不確実性リスク上昇?／高市外交批判は非生産的／データセンター建設にブレーキ、日本には勝機／トランプは狂っていない《峯村健司×村田晃嗣》</a>
+</p>
+<div class="meta">
+<span class="pub">公開：11月6日 21:28</span>
+<a class="watch" href="https://www.youtube.com/watch?v=6X2sMBFXkQU" target="_blank" rel="noopener noreferrer">YouTubeで見る ↗</a>
+</div>
+</article>
+</div>
+
+<p class="note">プライムニュース・深層NEWS・TBS CROSS DIG with Bloomberg・PIVOTには、過去24時間に対象出演者の新着動画はありませんでした。</p>
+</section>
+
+<footer class="footer">
+<span>2026年11月7日（土）</span>
+<span>Web：8件 · YouTube：2本</span>
+</footer>
+</div>
+</body>
+</html>
